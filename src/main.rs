@@ -1,6 +1,6 @@
 extern crate helio;
 
-use helio::core::{Color, Canvas, Circle, Style, Scene};
+use helio::core::{Color, Canvas, Circle, Style, Scene, Rect};
 use helio::svg_backend;
 
 fn main() {
@@ -21,9 +21,21 @@ fn main() {
             stroke_width: 1
         }
     };
+    let rect = Rect {
+        x: canvas.width / 4,
+        y: canvas.height / 4,
+        width: 40,
+        height: 40,
+        style: Style {
+            fill: Some(blue),
+            stroke: None,
+            stroke_width: 1
+        }
+    };
 
     let mut scene = Scene::new(canvas);
     scene.add(Box::new(circle));
+    scene.add(Box::new(rect));
 
     svg_backend::save("chart.svg", &scene);
 }

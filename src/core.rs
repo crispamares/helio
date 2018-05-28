@@ -1,5 +1,5 @@
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -11,20 +11,12 @@ impl Color {
     pub fn to_string(&self) -> String {
         format!("rgba({:},{:},{:},{:})", self.r, self.g, self.b, self.a)
     }
-}
 
-// impl Option<Color> {
-//     fn to_string(&self) -> String {
-//         match self {
-//             Some(c) => c.to_string(),
-//             None => "none".into()
-//         }
-//     }
-// }
-
-impl Into<String> for Color {
-    fn into(self) -> String {
-        self.to_string()
+    pub fn rgba(color: &Option<Self>) -> String {
+        match color { 
+            Some(c) => c.to_string(), 
+            None => "none".into() 
+        }
     }
 }
 
