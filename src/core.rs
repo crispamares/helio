@@ -1,3 +1,4 @@
+use std::rc::Rc;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
@@ -63,7 +64,7 @@ pub struct Circle {
     pub x: u32,
     pub y: u32,
     pub radius: u32,
-    pub style: Style
+    pub style: Rc<Style>
 }
 
 #[derive(Debug)]
@@ -72,7 +73,7 @@ pub struct Rect {
     pub y: u32,
     pub width: u32,
     pub height: u32,
-    pub style: Style
+    pub style: Rc<Style>
 }
 
 pub trait Mark {
