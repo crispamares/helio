@@ -1,15 +1,29 @@
-extern crate canvas;
+extern crate helio;
 
-use canvas::{Canvas, WebCanvas};
-use std::net::{SocketAddr, IpAddr, Ipv4Addr};
+use helio::core::{Color, Canvas, Circle, Style, Scene};
+use helio::svg_backend;
 
 fn main() {
-    let mut ctx = WebCanvas::start(SocketAddr::new(IpAddr::from(Ipv4Addr::new(127, 0, 0, 1)), 8888));
+    let white = Color{r:0, g:0, b:0, a:1.0};
+    let blue = Color{r:0, g:0, b:255, a:0.5};
+    let canvas = Canvas {
+        width: 800,
+        height: 600,
+        background: white
+    };
+    let circle = Circle {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        radius: 40,
+        style: Style {
+            fill: Some(blue),
+            stroke: None,
+            stroke_width: 1
+        }
+    };
 
-    ctx.fillRect(10.0, 10.0, 20.0, 20.0);
-    
-    let mut events = ctx.events().iter();
-    while let Some(_ev) = events.next() {}
+    let mut scene = Scene::new(canvas);
+    scene.add(Box::new(circle));
 
-    println!("____Stop____");
+    svg_backend::save("chart.svg", &scene);
 }
