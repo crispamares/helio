@@ -18,7 +18,8 @@ impl Glyph for Circle {
             .set("cy", self.y)
             .set("r", self.radius)
             .set("fill", Color::rgba(&self.style.fill))
-            .set("stroke", Color::rgba(&self.style.stroke));
+            .set("stroke", Color::rgba(&self.style.stroke))
+            .set("stroke-width", self.style.stroke_width);
         ctx.doc.append(e);
     }
 }
@@ -34,7 +35,8 @@ impl Glyph for Rect {
             .set("width", self.width)
             .set("height", self.height)
             .set("fill", Color::rgba(&self.style.fill))
-            .set("stroke", Color::rgba(&self.style.stroke));
+            .set("stroke", Color::rgba(&self.style.stroke))
+            .set("stroke-width", self.style.stroke_width);
         ctx.doc.append(e);
     }
 }

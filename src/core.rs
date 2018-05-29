@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -21,7 +21,7 @@ impl Color {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Canvas {
     pub width: u32,
     pub height: u32,
@@ -35,6 +35,17 @@ pub struct Style {
     pub stroke_width: u32
 }
 
+impl Default for Style {
+    fn default() -> Style { 
+        Style {
+            fill: Some(Color{r: 0, g: 0, b: 0, a: 1.0}), 
+            stroke: None,
+            stroke_width: 1
+        }
+    }
+}
+
+#[derive(Default)]
 pub struct Scene<T> {
     pub canvas: Canvas,
     pub glyphs: Vec<Box<Glyph<Context=T>>>
@@ -59,15 +70,16 @@ pub trait Glyph {
     fn draw(& self, ctx: &mut Self::Context);
 }
 
-#[derive(Debug)]
+#[derive(Debug, Builder, Default)]
 pub struct Circle {
     pub x: u32,
     pub y: u32,
     pub radius: u32,
+    #[builder(default)]
     pub style: Rc<Style>
 }
 
-#[derive(Debug)]
+#[derive(Debug, Builder)]
 pub struct Rect {
     pub x: u32,
     pub y: u32,
