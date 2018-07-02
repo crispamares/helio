@@ -28,7 +28,7 @@ pub struct Canvas {
     pub background: Color
 }
 
-#[derive(Debug)]
+#[derive(Debug, Builder)]
 pub struct Style {
     pub fill: Option<Color>,
     pub stroke: Option<Color>,
