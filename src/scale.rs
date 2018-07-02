@@ -9,15 +9,15 @@ pub struct Scale<D, R> {
 }
 
 impl<D, R> Scale<D, R> where 
-    D: Sub<Output=D> + Mul<Output=D> + Div<Output=D> + Copy,
-    R: Sub<Output=R> + Mul<Output=R> + Div<Output=R> + Copy,
-    Vec<R>: FromIterator<D>,
     D: From<R>
+    D: Sub<Output=D> + Mul<Output=D> + Div<Output=D> + Copy,
+    R: Sub<Output=D> + Copy,
+    Vec<R>: FromIterator<D>,
 {
     pub fn call(&self, data: &[D]) -> Vec<R> {
         data.iter()
             .map(|&x| x 
-                * (self.range[1] - self.range[0]).into()
+                * (self.range[1] - self.range[0])
                 / (self.domain[1] - self.domain[0]) )
             .collect()
     }
