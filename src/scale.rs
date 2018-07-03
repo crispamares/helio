@@ -9,10 +9,9 @@ pub struct Scale<D, R> {
 }
 
 impl<D, R> Scale<D, R> where 
-    D: From<R>
-    D: Sub<Output=D> + Mul<Output=D> + Div<Output=D> + Copy,
+    D: From<R> + Sub<Output=D> + Mul<Output=D> + Div<Output=D> + Copy,
     R: Sub<Output=D> + Copy,
-    Vec<R>: FromIterator<D>,
+    Vec<R>: FromIterator<D>
 {
     pub fn call(&self, data: &[D]) -> Vec<R> {
         data.iter()
