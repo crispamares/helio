@@ -17,8 +17,9 @@ Helio is a visualization library for Rust.
 - Scales
 - Layers
 - Axis
+- Legends
 - Interactions
 
-- First backend in SVG for easy debugging
-- Create a raster backend in Rust with the API of html5 canvas
-- Use the html5 canvas so it can be compiled to Wasm and draw using the browser's canvas.
+- [x] First backend in SVG for easy debugging
+- [ ] Create a raster backend in Rust with the API of html5 canvas
+- [ ] Use the html5 canvas so it can be compiled to Wasm and draw using the browser's canvas.

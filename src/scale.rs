@@ -1,10 +1,13 @@
-use std::ops::{Sub, Mul, Div, };
 use std::iter::{FromIterator};
-use std::convert::{From};
+use std::convert::{From, Into};
+use num_traits::{Float};
 
 
 #[derive(Debug, Builder, Default, PartialEq)]
-pub struct Scale<D, R> {
+pub struct Scale<D, R> where 
+    D: Float,
+    R: Float
+{
     pub domain: Vec<D>,
     pub range: Vec<R>,
     #[builder(default)]
@@ -12,8 +15,8 @@ pub struct Scale<D, R> {
 }
 
 impl<D, R> Scale<D, R> where
-    D: From<R> + Sub<Output=D> + Mul<Output=D> + Div<Output=D> + Copy,
-    R: From<D> + Sub<Output=R> + Mul<Output=R> + Div<Output=R> + Copy,
+    D: From<R> + Float,
+    R: From<D> + Float,
     Vec<D>: FromIterator<R>,
     Vec<R>: FromIterator<D>
 {
@@ -73,4 +76,33 @@ mod tests {
 
         assert_eq!( scale.invert(&[10.0, 20.0, 30.0, 40.0, 50.0]), [1.0, 2.0, 3.0, 4.0, 5.0]);
     }
+
+
+    #[test]
+    fn clap_works() {
+        let scale: Scale<f32, f32> = ScaleBuilder::default()
+            .domain(vec![1.0, 2.0])
+            .range(vec![10.0, 20.0])
+            .clap(true)
+            .build().unwrap();
+
+        assert_eq!( scale.call(&[0.0, 1.0, 2.0, 3.0]), [10.0, 10.0, 20.0, 20.0] );
+        assert_eq!( scale.invert(&[0.0, 10.0, 20.0, 30.0]), &[1.0, 1.0, 2.0, 2.0] );
+    }
+
+
+    #[test]
+    fn clap_mut() {
+        let mut scale: Scale<f32, f32> = ScaleBuilder::default()
+            .domain(vec![1.0, 2.0])
+            .range(vec![10.0, 20.0])
+            .clap(true)
+            .build().unwrap();
+
+        scale.clap = false;
+        scale.domain = vec![10.0, 20.0];
+        
+        assert_eq!( scale.clap, false);
+        assert_eq!( scale.domain, vec![10.0, 20.0]);
+    }  
 }
