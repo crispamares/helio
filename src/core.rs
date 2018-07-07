@@ -30,8 +30,11 @@ pub struct Canvas {
 
 #[derive(Debug, Builder)]
 pub struct Style {
+    #[builder(default)]
     pub fill: Option<Color>,
+    #[builder(default)]
     pub stroke: Option<Color>,
+    #[builder(default)]
     pub stroke_width: u32
 }
 
