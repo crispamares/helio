@@ -7,3 +7,6 @@ authors = ["Juan Morales <crispamares@gmail.com>"]
 derive_builder = "0.5.1"
 num-traits = "0.2" 
 svg = "0.5.10"
+
+[dev-dependencies]
+csv = "1"
