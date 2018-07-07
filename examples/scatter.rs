@@ -4,6 +4,7 @@ use std::rc::Rc;
 use std::error::Error;
 
 use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene, Rect};
+use helio::scale::{Scale};
 use helio::svg_backend;
 
 fn main() -> Result<(), Box<Error>> {
@@ -19,6 +20,8 @@ fn main() -> Result<(), Box<Error>> {
         height: 600,
         background: white
     };
+
+    let data = [{}];
 
     let circle : Circle = CircleBuilder::default()
         .x(canvas.width / 2)
