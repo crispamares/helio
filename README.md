@@ -1,5 +1,7 @@
 # Helio
 
+**WARNING** : Don't use it... just for experimenting at this time
+
 Helio is a visualization library for Rust. 
 
 - Should be fast:
