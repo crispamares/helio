@@ -46,6 +46,7 @@ pub fn save (path: &str, scene: & Scene<SVGContext>) {
     let mut context = SVGContext{
         doc: Document::new()
                 .set("viewBox", (0, 0, scene.canvas.width, scene.canvas.height))
+                .set("style", format!("background: {};", scene.canvas.background.to_string()))
     };
 
     for glyph in & scene.glyphs {

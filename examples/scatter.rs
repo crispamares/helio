@@ -34,7 +34,7 @@ fn main() -> Result<(), Box<Error>> {
         y_data.push(record.get(y_data_idx).unwrap().parse()?);
     }
 
-    let white = Color{r:0, g:0, b:0, a:1.0};
+    let white = Color{r:255, g:255, b:255, a:0.0};
     let blue = Color{r:0, g:0, b:255, a:0.5};
     let style = Rc::new(
         StyleBuilder::default()
@@ -60,16 +60,15 @@ fn main() -> Result<(), Box<Error>> {
     let mut scene = Scene::new(canvas);
     for r in x_scale.call(&x_data).iter().zip(y_scale.call(&y_data).iter()) {
 
-        let (x, y) = r;
+        let ( &x, &y) = r;
         let circle : Circle = CircleBuilder::default()
-            .x(*x)
-            .y(*y)
+            .x(x)
+            .y(y)
             .radius(10)
             .style(style.clone())
             .build()?;
 
         scene.add(Box::new(circle));
-        
     }
 
     svg_backend::save("chart.svg", &scene);

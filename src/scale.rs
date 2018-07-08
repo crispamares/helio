@@ -1,5 +1,3 @@
-use std::iter::{FromIterator};
-use std::convert::{From, Into};
 use std::f64::{INFINITY, NEG_INFINITY};
 
 pub fn extend(vec: &[f64]) -> [f64; 2] {
