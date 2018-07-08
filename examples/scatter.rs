@@ -17,8 +17,8 @@ fn main() -> Result<(), Box<Error>> {
     let y_column = "displacement (cc)";
 
     // Data to use
-    let mut x_data: Vec<f32> = Vec::new();
-    let mut y_data: Vec<f32> = Vec::new();
+    let mut x_data: Vec<f64> = Vec::new();
+    let mut y_data: Vec<f64> = Vec::new();
 
     let mut rdr = csv::Reader::from_path("examples/data/cars.csv")?;
     println!("{:?}", rdr.headers()?);
@@ -47,25 +47,23 @@ fn main() -> Result<(), Box<Error>> {
         background: white
     };
 
-    let x_scale: Scale<f32, f32> = ScaleBuilder::default()
+    let x_scale: Scale = ScaleBuilder::default()
         .domain(extend(&x_data))
-        .range([0.0, width as f32])
+        .range([0.0, width as f64])
         .build()?;
 
-    let y_scale: Scale<f32, f32> = ScaleBuilder::default()
+    let y_scale: Scale = ScaleBuilder::default()
         .domain(extend(&y_data))
-        .range([height as f32, 0.0])
+        .range([height as f64, 0.0])
         .build()?;
 
-    print!("{:?} · ", &x_scale);
     let mut scene = Scene::new(canvas);
     for r in x_scale.call(&x_data).iter().zip(y_scale.call(&y_data).iter()) {
 
         let (x, y) = r;
-        print!("{:?} · ", &x);
         let circle : Circle = CircleBuilder::default()
-            .x(*x as u32)
-            .y(*y as u32)
+            .x(*x)
+            .y(*y)
             .radius(10)
             .style(style.clone())
             .build()?;

@@ -4,7 +4,6 @@ use std::rc::Rc;
 use std::error::Error;
 
 use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene, Rect};
-use helio::scale::{Scale};
 use helio::svg_backend;
 
 fn main() -> Result<(), Box<Error>> {
@@ -21,20 +20,18 @@ fn main() -> Result<(), Box<Error>> {
         background: white
     };
 
-    let data = [{}];
-
     let circle : Circle = CircleBuilder::default()
-        .x(canvas.width / 2)
-        .y(canvas.height / 2)
+        .x(canvas.width as f64 / 2.0)
+        .y(canvas.height as f64 / 2.0)
         .radius(40)
         .style(style.clone())
         .build()?;
 
     let rect = Rect {
-        x: canvas.width / 4,
-        y: canvas.height / 4,
-        width: 40,
-        height: 40,
+        x: canvas.width as f64 / 4.0,
+        y: canvas.height as f64 / 4.0,
+        width: 40.0,
+        height: 40.0,
         style: style.clone()
     };
 

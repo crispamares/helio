@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use std::convert::Into;
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Color {
@@ -29,13 +30,14 @@ pub struct Canvas {
 }
 
 #[derive(Debug, Builder)]
+#[builder(setter(into))]
 pub struct Style {
     #[builder(default)]
     pub fill: Option<Color>,
     #[builder(default)]
     pub stroke: Option<Color>,
     #[builder(default)]
-    pub stroke_width: u32
+    pub stroke_width: f64
 }
 
 impl Default for Style {
@@ -43,7 +45,7 @@ impl Default for Style {
         Style {
             fill: Some(Color{r: 0, g: 0, b: 0, a: 1.0}), 
             stroke: None,
-            stroke_width: 1
+            stroke_width: 1.0
         }
     }
 }
@@ -74,31 +76,33 @@ pub trait Glyph {
 }
 
 #[derive(Debug, Builder, Default)]
+#[builder(setter(into))]
 pub struct Circle {
-    pub x: u32,
-    pub y: u32,
-    pub radius: u32,
+    pub x: f64,
+    pub y: f64,
+    pub radius: f64,
     #[builder(default)]
     pub style: Rc<Style>
 }
 
 #[derive(Debug, Builder)]
+#[builder(setter(into))]
 pub struct Rect {
-    pub x: u32,
-    pub y: u32,
-    pub width: u32,
-    pub height: u32,
+    pub x: f64,
+    pub y: f64,
+    pub width: f64,
+    pub height: f64,
     pub style: Rc<Style>
 }
 
 pub trait Mark {
-    fn x() -> u32;
-    fn y() -> u32;
-    fn x2() -> u32;
-    fn y2() -> u32;
-    fn xc() -> u32;
-    fn yc() -> u32;
-    fn width() -> u32;
-    fn height() -> u32;
+    fn x() -> f64;
+    fn y() -> f64;
+    fn x2() -> f64;
+    fn y2() -> f64;
+    fn xc() -> f64;
+    fn yc() -> f64;
+    fn width() -> f64;
+    fn height() -> f64;
     fn style() -> Style;
 }
