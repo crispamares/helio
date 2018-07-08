@@ -1,4 +1,4 @@
-extern crate helio;
+#[macro_use] extern crate helio;
 extern crate csv;
 
 use std::rc::Rc;
@@ -15,11 +15,13 @@ fn main() -> Result<(), Box<Error>> {
 
     let x_column = "weight (lb)";
     let y_column = "displacement (cc)";
+    let r_column = "year";
 
     // Data to use
     let mut x_data: Vec<f64> = Vec::new();
     let mut y_data: Vec<f64> = Vec::new();
-
+    let mut r_data: Vec<f64> = Vec::new();
+    
     let mut rdr = csv::Reader::from_path("examples/data/cars.csv")?;
     println!("{:?}", rdr.headers()?);
 
@@ -27,14 +29,17 @@ fn main() -> Result<(), Box<Error>> {
         .ok_or(format!("'{}' not in the dataset", x_column) )?;
     let y_data_idx = rdr.headers()?.iter().position(|x| x == y_column)
         .ok_or(format!("'{}' not in the dataset", y_column) )?;
+    let r_data_idx = rdr.headers()?.iter().position(|x| x == r_column)
+        .ok_or(format!("'{}' not in the dataset", r_column) )?;
 
     for result in rdr.records() {
         let record = result?;
         x_data.push(record.get(x_data_idx).unwrap().parse()?);
         y_data.push(record.get(y_data_idx).unwrap().parse()?);
+        r_data.push(record.get(r_data_idx).unwrap().parse()?);
     }
 
-    let white = Color{r:255, g:255, b:255, a:0.0};
+    let white = Color{r:255, g:255, b:255, a:1.0};
     let blue = Color{r:0, g:0, b:255, a:0.5};
     let style = Rc::new(
         StyleBuilder::default()
@@ -57,14 +62,22 @@ fn main() -> Result<(), Box<Error>> {
         .range([height as f64, 0.0])
         .build()?;
 
-    let mut scene = Scene::new(canvas);
-    for r in x_scale.call(&x_data).iter().zip(y_scale.call(&y_data).iter()) {
+    let r_scale: Scale = ScaleBuilder::default()
+        .domain(extend(&r_data))
+        .range([0.0, 10.0])
+        .build()?;
 
-        let ( &x, &y) = r;
+    let mut scene = Scene::new(canvas);
+    // for r in x_scale.call(&x_data).iter().zip(y_scale.call(&y_data).iter()) {
+    for row in izip!(x_scale.call(&x_data), 
+                   y_scale.call(&y_data),
+                   r_scale.call(&r_data)) {
+
+        let (x, y, r) = row;
         let circle : Circle = CircleBuilder::default()
             .x(x)
             .y(y)
-            .radius(10)
+            .radius(r)
             .style(style.clone())
             .build()?;
 
