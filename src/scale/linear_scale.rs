@@ -1,5 +1,6 @@
 use std::f64::{INFINITY, NEG_INFINITY};
 
+/// Computes the min and max of an array
 pub fn extend(vec: &[f64]) -> [f64; 2] {
     let mut min = INFINITY;
     let mut max = NEG_INFINITY;
@@ -14,14 +15,14 @@ pub fn extend(vec: &[f64]) -> [f64; 2] {
 
 #[derive(Debug, Builder, Default, PartialEq)]
 #[builder(setter(into))]
-pub struct Scale {
+pub struct LinearScale {
     pub domain:[f64; 2],
     pub range: [f64; 2],
     #[builder(default)]
     pub clap: bool
 }
 
-impl Scale {
+impl LinearScale {
     pub fn call(&self, data: &[f64]) -> Vec<f64> {
         data.iter()
             .map(|&x| {
@@ -53,17 +54,17 @@ mod tests {
 
     #[test]
     fn builder_works() {
-        let scale: Scale = ScaleBuilder::default()
+        let scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
             .clap(false)
             .build().unwrap();
-        assert_eq!(scale, Scale{range: [10.0, 20.0], domain: [1.0, 2.0], clap: false});
+        assert_eq!(scale, LinearScale{range: [10.0, 20.0], domain: [1.0, 2.0], clap: false});
     }
 
     #[test]
     fn call_works() {
-        let scale: Scale = ScaleBuilder::default()
+        let scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([0.0, 100.0])
             .build().unwrap();
@@ -73,7 +74,7 @@ mod tests {
 
     #[test]
     fn invert_works() {
-        let scale: Scale = ScaleBuilder::default()
+        let scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
             .build().unwrap();
@@ -84,7 +85,7 @@ mod tests {
 
     #[test]
     fn clap_works() {
-        let scale: Scale = ScaleBuilder::default()
+        let scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
             .clap(true)
@@ -97,7 +98,7 @@ mod tests {
 
     #[test]
     fn clap_mut() {
-        let mut scale: Scale = ScaleBuilder::default()
+        let mut scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
             .clap(true)

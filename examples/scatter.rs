@@ -5,7 +5,7 @@ use std::rc::Rc;
 use std::error::Error;
 
 use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene};
-use helio::scale::{Scale, ScaleBuilder, extend};
+use helio::scale::{LinearScale, LinearScaleBuilder, extend};
 use helio::svg_backend;
 
 fn main() -> Result<(), Box<Error>> {
@@ -52,17 +52,17 @@ fn main() -> Result<(), Box<Error>> {
         background: white
     };
 
-    let x_scale: Scale = ScaleBuilder::default()
+    let x_scale: LinearScale = LinearScaleBuilder::default()
         .domain(extend(&x_data))
         .range([0.0, width as f64])
         .build()?;
 
-    let y_scale: Scale = ScaleBuilder::default()
+    let y_scale: LinearScale = LinearScaleBuilder::default()
         .domain(extend(&y_data))
         .range([height as f64, 0.0])
         .build()?;
 
-    let r_scale: Scale = ScaleBuilder::default()
+    let r_scale: LinearScale = LinearScaleBuilder::default()
         .domain(extend(&r_data))
         .range([0.0, 10.0])
         .build()?;
@@ -70,8 +70,8 @@ fn main() -> Result<(), Box<Error>> {
     let mut scene = Scene::new(canvas);
     // for r in x_scale.call(&x_data).iter().zip(y_scale.call(&y_data).iter()) {
     for row in izip!(x_scale.call(&x_data), 
-                   y_scale.call(&y_data),
-                   r_scale.call(&r_data)) {
+                     y_scale.call(&y_data),
+                     r_scale.call(&r_data)) {
 
         let (x, y, r) = row;
         let circle : Circle = CircleBuilder::default()
