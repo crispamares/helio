@@ -1,26 +1,5 @@
 use std::rc::Rc;
-use std::convert::Into;
-
-#[derive(Debug, Clone, Copy, Default)]
-pub struct Color {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
-    pub a: f32
-}
-
-impl Color {
-    pub fn to_string(&self) -> String {
-        format!("rgba({:},{:},{:},{:})", self.r, self.g, self.b, self.a)
-    }
-
-    pub fn rgba(color: &Option<Self>) -> String {
-        match color { 
-            Some(c) => c.to_string(), 
-            None => "none".into() 
-        }
-    }
-}
+pub use color::Color;
 
 #[derive(Debug, Default)]
 pub struct Canvas {
