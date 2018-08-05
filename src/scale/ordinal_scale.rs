@@ -23,7 +23,7 @@ impl<D, R> OrdinalScaleBuilder<D, R> where
     D: Eq + Hash + Clone + Debug,
     R: Default + Clone + Debug
 {
-    fn build(&self) -> Result<OrdinalScale<D,R>, String> {
+    pub fn build(&self) -> Result<OrdinalScale<D,R>, String> {
         let domain = Clone::clone(self.domain.as_ref()
                 .ok_or("domain must be initialized")?);
         let range = Clone::clone(self.range.as_ref()
