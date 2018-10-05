@@ -1,7 +1,6 @@
 #[macro_use] extern crate helio;
 extern crate csv;
 
-use std::rc::Rc;
 use std::error::Error;
 
 use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene};
