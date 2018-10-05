@@ -19,7 +19,9 @@ pub struct LinearScale {
     pub domain:[f64; 2],
     pub range: [f64; 2],
     #[builder(default)]
-    pub clamp: bool
+    pub clamp: bool,
+    #[builder(default)]
+    pub round: bool
 }
 
 impl LinearScale {
@@ -30,7 +32,8 @@ impl LinearScale {
                     * (self.range[1] - self.range[0])
                     / (self.domain[1] - self.domain[0]);
                 val = val + self.range[0];
-                if self.clamp { self.range[1].min(val).max(self.range[0]) } else { val }
+                let result = if self.clamp { self.range[1].min(val).max(self.range[0]) } else { val };
+                if self.round { result.round() } else { result }
             })
             .collect()
     }
@@ -42,7 +45,8 @@ impl LinearScale {
                     * (self.domain[1] - self.domain[0])
                     / (self.range[1] - self.range[0]);
                 val = val + self.domain[0];
-                if self.clamp { self.domain[1].min(val).max(self.domain[0]) } else { val }
+                let result = if self.clamp { self.domain[1].min(val).max(self.domain[0]) } else { val };
+                if self.round { result.round() } else { result }
                 })
             .collect()
     }
@@ -59,7 +63,7 @@ mod tests {
             .range([10.0, 20.0])
             .clamp(false)
             .build().unwrap();
-        assert_eq!(scale, LinearScale{range: [10.0, 20.0], domain: [1.0, 2.0], clamp: false});
+        assert_eq!(scale, LinearScale{range: [10.0, 20.0], domain: [1.0, 2.0], clamp: false, round: false});
     }
 
     #[test]
@@ -110,4 +114,16 @@ mod tests {
         assert_eq!( scale.clamp, false);
         assert_eq!( scale.domain, [10.0, 20.0]);
     }  
+
+    #[test]
+    fn round_works() {
+        let scale: LinearScale = LinearScaleBuilder::default()
+            .domain([1.0, 2.0])
+            .range([10.0, 20.0])
+            .round(true)
+            .build().unwrap();
+
+        assert_eq!( scale.call(&[0.1, 1.1, 2.1, 3.1]), [1.0, 11.0, 21.0, 31.0] );
+        assert_eq!( scale.invert(&[0.1, 10.1, 20.1, 30.1]), &[0.0, 1.0, 2.0, 3.0] );
+    }
 }
