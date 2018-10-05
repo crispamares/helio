@@ -19,7 +19,7 @@ pub struct LinearScale {
     pub domain:[f64; 2],
     pub range: [f64; 2],
     #[builder(default)]
-    pub clap: bool
+    pub clamp: bool
 }
 
 impl LinearScale {
@@ -30,7 +30,7 @@ impl LinearScale {
                     * (self.range[1] - self.range[0])
                     / (self.domain[1] - self.domain[0]);
                 val = val + self.range[0];
-                if self.clap { self.range[1].min(val).max(self.range[0]) } else { val }
+                if self.clamp { self.range[1].min(val).max(self.range[0]) } else { val }
             })
             .collect()
     }
@@ -42,7 +42,7 @@ impl LinearScale {
                     * (self.domain[1] - self.domain[0])
                     / (self.range[1] - self.range[0]);
                 val = val + self.domain[0];
-                if self.clap { self.domain[1].min(val).max(self.domain[0]) } else { val }
+                if self.clamp { self.domain[1].min(val).max(self.domain[0]) } else { val }
                 })
             .collect()
     }
@@ -57,9 +57,9 @@ mod tests {
         let scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
-            .clap(false)
+            .clamp(false)
             .build().unwrap();
-        assert_eq!(scale, LinearScale{range: [10.0, 20.0], domain: [1.0, 2.0], clap: false});
+        assert_eq!(scale, LinearScale{range: [10.0, 20.0], domain: [1.0, 2.0], clamp: false});
     }
 
     #[test]
@@ -84,11 +84,11 @@ mod tests {
 
 
     #[test]
-    fn clap_works() {
+    fn clamp_works() {
         let scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
-            .clap(true)
+            .clamp(true)
             .build().unwrap();
 
         assert_eq!( scale.call(&[0.0, 1.0, 2.0, 3.0]), [10.0, 10.0, 20.0, 20.0] );
@@ -97,17 +97,17 @@ mod tests {
 
 
     #[test]
-    fn clap_mut() {
+    fn clamp_mut() {
         let mut scale: LinearScale = LinearScaleBuilder::default()
             .domain([1.0, 2.0])
             .range([10.0, 20.0])
-            .clap(true)
+            .clamp(true)
             .build().unwrap();
 
-        scale.clap = false;
+        scale.clamp = false;
         scale.domain = [10.0, 20.0];
         
-        assert_eq!( scale.clap, false);
+        assert_eq!( scale.clamp, false);
         assert_eq!( scale.domain, [10.0, 20.0]);
     }  
 }
