@@ -12,7 +12,6 @@ pub fn extend(vec: &[f64]) -> [f64; 2] {
     [min, max]
 }
 
-
 #[derive(Debug, Builder, Default, PartialEq)]
 #[builder(setter(into))]
 pub struct LinearScale {
@@ -25,30 +24,26 @@ pub struct LinearScale {
 }
 
 impl LinearScale {
-    pub fn call(&self, data: &[f64]) -> Vec<f64> {
+
+    fn interpolate(&self, data: &[f64], domain: &[f64; 2], range: &[f64; 2]) -> Vec<f64> {
         data.iter()
             .map(|&x| {
-                let mut val = ( x - self.domain[0] ) 
-                    * (self.range[1] - self.range[0])
-                    / (self.domain[1] - self.domain[0]);
-                val = val + self.range[0];
-                let result = if self.clamp { self.range[1].min(val).max(self.range[0]) } else { val };
+                let mut val = ( x - domain[0] ) 
+                    * (range[1] - range[0])
+                    / (domain[1] - domain[0]);
+                val = val + range[0];
+                let result = if self.clamp { range[1].min(val).max(range[0]) } else { val };
                 if self.round { result.round() } else { result }
             })
             .collect()
     }
 
+    pub fn call(&self, data: &[f64]) -> Vec<f64> {
+        self.interpolate(data, &self.domain, &self.range)
+    }
+
     pub fn invert(&self, data: &[f64]) -> Vec<f64> {
-        data.iter()
-            .map(|&x| { 
-                let mut val = ( x - self.range[0] ) 
-                    * (self.domain[1] - self.domain[0])
-                    / (self.range[1] - self.range[0]);
-                val = val + self.domain[0];
-                let result = if self.clamp { self.domain[1].min(val).max(self.domain[0]) } else { val };
-                if self.round { result.round() } else { result }
-                })
-            .collect()
+        self.interpolate(data, &self.range, &self.domain)
     }
 }
 
