@@ -1,16 +1,5 @@
-use std::f64::{INFINITY, NEG_INFINITY};
 
-/// Computes the min and max of an array
-pub fn extend(vec: &[f64]) -> [f64; 2] {
-    let mut min = INFINITY;
-    let mut max = NEG_INFINITY;
-    for &x in vec.iter() {
-        min = x.min(min);
-        max = x.max(max);
-    }
-
-    [min, max]
-}
+use scale::interpolate;
 
 #[derive(Debug, Builder, Default, PartialEq)]
 #[builder(setter(into))]
@@ -25,25 +14,12 @@ pub struct LinearScale {
 
 impl LinearScale {
 
-    fn interpolate(&self, data: &[f64], domain: &[f64; 2], range: &[f64; 2]) -> Vec<f64> {
-        data.iter()
-            .map(|&x| {
-                let mut val = ( x - domain[0] ) 
-                    * (range[1] - range[0])
-                    / (domain[1] - domain[0]);
-                val = val + range[0];
-                let result = if self.clamp { range[1].min(val).max(range[0]) } else { val };
-                if self.round { result.round() } else { result }
-            })
-            .collect()
-    }
-
     pub fn call(&self, data: &[f64]) -> Vec<f64> {
-        self.interpolate(data, &self.domain, &self.range)
+        interpolate(data, &self.domain, &self.range, self.clamp, self.round, |x| {x})
     }
 
     pub fn invert(&self, data: &[f64]) -> Vec<f64> {
-        self.interpolate(data, &self.range, &self.domain)
+        interpolate(data, &self.range, &self.domain, self.clamp, self.round, |x| {x})
     }
 }
 
