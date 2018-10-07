@@ -2,16 +2,18 @@
 extern crate csv;
 
 use std::error::Error;
+use std::rc::Rc;
 
-use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene};
+use helio::core::{Color, Canvas, Circle, CircleBuilder, Segment, SegmentBuilder,StyleBuilder, Scene};
 use helio::scale::{LinearScale, LinearScaleBuilder, OrdinalScale, OrdinalScaleBuilder, PowScale, PowScaleBuilder, extend};
 use helio::svg_backend;
-use helio::color::{WHITE, STEELBLUE, RED, PERU};
+use helio::color::{WHITE, STEELBLUE, RED, PERU, BLACK};
 
 fn main() -> Result<(), Box<Error>> {
 
     let width = 800;
     let height = 600;
+    let margin = (50.0, 70.0, 50.0, 70.0); // Top, Right, Bottom, Left
 
     let x_column = "weight (lb)";
     let y_column = "displacement (cc)";
@@ -52,12 +54,12 @@ fn main() -> Result<(), Box<Error>> {
 
     let x_scale: LinearScale = LinearScaleBuilder::default()
         .domain(extend(&x_data))
-        .range([0.0, width as f64])
+        .range([0.0 + margin.3, width as f64 - margin.1])
         .build()?;
 
     let y_scale: LinearScale = LinearScaleBuilder::default()
         .domain(extend(&y_data))
-        .range([height as f64, 0.0])
+        .range([height as f64 - margin.0, 0.0 + margin.2])
         .build()?;
 
     let r_scale: PowScale = PowScaleBuilder::default()
@@ -94,6 +96,29 @@ fn main() -> Result<(), Box<Error>> {
 
         scene.add(Box::new(circle));
     }
+
+    let axis_style = Rc::new(StyleBuilder::default()
+        .stroke(Some(BLACK))
+        .stroke_width(1.0)
+        .build()?);
+
+    let axis_bottom: Segment = SegmentBuilder::default()
+        .x(x_scale.range[0])
+        .x2(x_scale.range[1])
+        .y(y_scale.range[0])
+        .y2(y_scale.range[0])
+        .style(axis_style.clone())
+        .build()?;
+    let axis_left: Segment = SegmentBuilder::default()
+        .x(x_scale.range[0])
+        .x2(x_scale.range[0])
+        .y(y_scale.range[0])
+        .y2(y_scale.range[1])
+        .style(axis_style.clone())
+        .build()?;
+    
+    scene.add(Box::new(axis_bottom));
+    scene.add(Box::new(axis_left));
 
     svg_backend::save("chart.svg", &scene);
     Ok(())
