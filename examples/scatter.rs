@@ -4,7 +4,7 @@ extern crate csv;
 use std::error::Error;
 
 use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene};
-use helio::scale::{LinearScale, LinearScaleBuilder, OrdinalScale, OrdinalScaleBuilder, extend};
+use helio::scale::{LinearScale, LinearScaleBuilder, OrdinalScale, OrdinalScaleBuilder, PowScale, PowScaleBuilder, extend};
 use helio::svg_backend;
 use helio::color::{WHITE, STEELBLUE, RED, PERU};
 
@@ -60,9 +60,10 @@ fn main() -> Result<(), Box<Error>> {
         .range([height as f64, 0.0])
         .build()?;
 
-    let r_scale: LinearScale = LinearScaleBuilder::default()
+    let r_scale: PowScale = PowScaleBuilder::default()
         .domain(extend(&r_data))
-        .range([0.0, 10.0])
+        .range([5.0, 15.0])
+        .exponent(2)
         .build()?;
 
     let c_scale: OrdinalScale<String, Color> = OrdinalScaleBuilder::default()

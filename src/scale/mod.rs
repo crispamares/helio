@@ -43,6 +43,5 @@ pub use self::linear_scale::{LinearScale, LinearScaleBuilder};
 pub mod pow_scale;
 pub use self::pow_scale::{PowScale, PowScaleBuilder};
 
-
 pub mod ordinal_scale;
 pub use self::ordinal_scale::{OrdinalScale, OrdinalScaleBuilder};
