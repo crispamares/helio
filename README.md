@@ -14,7 +14,7 @@ Helio is a visualization library for Rust.
     - [x] rect
     - [x] circle
     - [x] segment
-    - [ ] line
+    - [x] line
     - [ ] path
     - [ ] arc
 - Scales
@@ -22,6 +22,7 @@ Helio is a visualization library for Rust.
         - [x] Linear
         - [x] Pow
         - [ ] Logarithm
+        - [x] TimeScale
     - [x] Ordinal
 - [ ] Layers
 - [ ] Axis
