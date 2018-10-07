@@ -74,6 +74,16 @@ pub struct Rect {
     pub style: Rc<Style>
 }
 
+#[derive(Debug, Builder)]
+#[builder(setter(into))]
+pub struct Segment {
+    pub x: f64,
+    pub y: f64,
+    pub x2: f64,
+    pub y2: f64,
+    pub style: Rc<Style>
+}
+
 pub trait Mark {
     fn x() -> f64;
     fn y() -> f64;

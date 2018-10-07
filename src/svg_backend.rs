@@ -2,7 +2,7 @@
 use svg;
 use svg::{Document, Node};
 use svg::node::element;
-use core::{Scene, Circle, Glyph, Color, Rect, Style};
+use core::{Scene, Circle, Glyph, Color, Rect, Segment, Style};
 
 pub struct SVGContext {
     pub doc: Document
@@ -37,6 +37,20 @@ impl Glyph for Rect {
             .set("y", self.y)
             .set("width", self.width)
             .set("height", self.height);
+        set_style(&mut e, &self.style);
+        ctx.doc.append(e);
+    }
+}
+
+impl Glyph for Segment {
+    type Context =  SVGContext;
+
+    fn draw(& self, ctx: &mut Self::Context) {
+        let mut e = element::Line::new()
+            .set("x1", self.x)
+            .set("y1", self.y)
+            .set("x2", self.x2)
+            .set("y2", self.y2);
         set_style(&mut e, &self.style);
         ctx.doc.append(e);
     }
