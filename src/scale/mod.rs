@@ -18,17 +18,21 @@ fn interpolate(
     range: &[f64; 2], 
     clamp: bool,
     round: bool,
-    interpolator: impl Fn(f64) -> f64
+    d_ease: impl Fn(f64) -> f64,
+    r_ease: impl Fn(f64) -> f64,
+    inv_ease: impl Fn(f64) -> f64
 ) -> Vec<f64> 
 {
     data.iter()
         .map(|&x| {
-            let mut val = ( interpolator(x) - interpolator(domain[0]) ) 
-                * (range[1] - range[0])
-                / (interpolator(domain[1]) - interpolator(domain[0]));
-            val = val + range[0];
-            let result = if clamp { range[1].min(val).max(range[0]) } else { val };
-            if round { result.round() } else { result }
+            let d0 = d_ease(domain[0]); 
+            let d1 = d_ease(domain[1]);
+            let r0 = r_ease(range[0]);
+            let r1 = r_ease(range[1]);
+            let unit = (d_ease(x) - d0) / (d1 - d0);   // deinterpolate  f(x) -> t ; t € [0,1]
+            let mut val = inv_ease((unit * (r1 - r0)) + r0);  // reinterpolate  f(t) -> y
+            val = if clamp { range[1].min(val).max(range[0]) } else { val };
+            if round { val.round() } else { val }
         })
         .collect()
 }

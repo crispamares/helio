@@ -15,11 +15,11 @@ pub struct LinearScale {
 impl LinearScale {
 
     pub fn call(&self, data: &[f64]) -> Vec<f64> {
-        interpolate(data, &self.domain, &self.range, self.clamp, self.round, |x| {x})
+        interpolate(data, &self.domain, &self.range, self.clamp, self.round, |x| {x}, |x| {x}, |x| {x})
     }
 
     pub fn invert(&self, data: &[f64]) -> Vec<f64> {
-        interpolate(data, &self.range, &self.domain, self.clamp, self.round, |x| {x})
+        interpolate(data, &self.range, &self.domain, self.clamp, self.round, |x| {x}, |x| {x}, |x| {x})
     }
 }
 

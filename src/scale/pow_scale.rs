@@ -10,18 +10,27 @@ pub struct PowScale {
     pub clamp: bool,
     #[builder(default)]
     pub round: bool,
-    #[builder(default = "2")]
-    pub exponent: i32,
+    #[builder(default = "2.0")]
+    pub exponent: f64,
 }
 
 impl PowScale {
 
+    fn ease(&self) -> (impl Fn(f64) -> f64) { 
+        let exp = self.exponent;
+        move |x| x.powf(exp)
+    }
+    fn inv_ease(&self) -> (impl Fn(f64) -> f64) { 
+        let exp = self.exponent;
+        move |x| x.powf(1.0 / exp)
+    }
+   
     pub fn call(&self, data: &[f64]) -> Vec<f64> {
-        interpolate(data, &self.domain, &self.range, self.clamp, self.round, |x| {x.powi(self.exponent)})
+        interpolate(data, &self.domain, &self.range, self.clamp, self.round, self.ease(), |x| {x}, |x| {x})
     }
 
     pub fn invert(&self, data: &[f64]) -> Vec<f64> {
-        interpolate(data, &self.range, &self.domain, self.clamp, self.round, |x| {x.powf(1.0/ self.exponent as f64)})
+        interpolate(data, &self.range, &self.domain, self.clamp, self.round, |x| {x}, self.ease(), self.inv_ease())
     }
 }
 
@@ -36,7 +45,7 @@ mod tests {
             .range([10.0, 20.0])
             .clamp(false)
             .build().unwrap();
-        assert_eq!(scale, PowScale{range: [10.0, 20.0], domain: [1.0, 2.0], clamp: false, round: false, exponent: 2});
+        assert_eq!(scale, PowScale{range: [10.0, 20.0], domain: [1.0, 2.0], clamp: false, round: false, exponent: 2.0});
     }
 
     #[test]
@@ -44,14 +53,15 @@ mod tests {
         let mut scale: PowScale = PowScaleBuilder::default()
             .domain([0.0, 1.0])
             .range([0.0, 100.0])
+            .exponent(2.0)
             .build().unwrap();
 
         assert_eq!( scale.call(&[1.0, 2.0, 3.0, 4.0, 5.0]), [100.0, 400.0, 900.0, 1600.0, 2500.0] );
 
-        scale.domain = [1.0, 2.0];
-        scale.range = [1.0, 2.0];
+        scale.domain = [1.0, 3.0];
+        scale.range = [1.0, 3.0];
 
-        assert_eq!( scale.call(&[0.5,1.0,2.0,4.0,5.0]), [ 0.75, 1.0, 2.0, 6.0, 9.0 ]);
+        assert_eq!( scale.call(&[0.5,1.0,2.0,3.0,4.0]), [ 0.8125, 1.0, 1.75, 3.0, 4.75 ]);
     }
 
     #[test]
@@ -63,10 +73,10 @@ mod tests {
 
         assert_eq!( scale.invert(&[100.0, 400.0, 900.0, 1600.0, 2500.0]), [1.0, 2.0, 3.0, 4.0, 5.0]);
 
-        scale.domain = [1.0, 2.0];
-        scale.range = [1.0, 2.0];
+        scale.domain = [1.0, 3.0];
+        scale.range = [1.0, 3.0];
 
-        assert_eq!( scale.invert(&[ 0.75, 1.0, 2.0, 6.0, 9.0 ]), [0.5,1.0,2.0,4.0,5.0]);
+        assert_eq!( scale.invert(&[ 0.8125, 1.0, 1.75, 3.0, 4.75 ]), [0.5,1.0,2.0,3.0,4.0]);
     }
 
 
@@ -86,12 +96,12 @@ mod tests {
     #[test]
     fn round_works() {
         let scale: PowScale = PowScaleBuilder::default()
-            .domain([1.0, 2.0])
-            .range([10.0, 20.0])
+            .domain([1.0, 3.0])
+            .range([1.0, 3.0])
             .round(true)
             .build().unwrap();
 
-        assert_eq!( scale.call(&[0.1, 1.1, 2.1, 3.1]), [1.0, 11.0, 21.0, 31.0] );
-        assert_eq!( scale.invert(&[0.1, 10.1, 20.1, 30.1]), &[0.0, 1.0, 2.0, 3.0] );
+        assert_eq!( scale.call(&[0.5,1.0,2.0,3.0,4.0]), [ 1.0, 1.0, 2.0, 3.0, 5.0 ]);
+        assert_eq!( scale.invert(&[ 0.8125, 1.0, 1.75, 3.0, 4.75 ]), [1.0,1.0,2.0,3.0,4.0]);
     }
 }
