@@ -4,7 +4,9 @@ use scale::interpolate;
 #[derive(Debug, Builder, Default, PartialEq)]
 #[builder(setter(into))]
 pub struct LinearScale {
+    #[builder(default = "[0.0, 1.0]")]
     pub domain:[f64; 2],
+    #[builder(default = "[0.0, 1.0]")]
     pub range: [f64; 2],
     #[builder(default)]
     pub clamp: bool,
@@ -30,11 +32,9 @@ mod tests {
     #[test]
     fn builder_works() {
         let scale: LinearScale = LinearScaleBuilder::default()
-            .domain([1.0, 2.0])
-            .range([10.0, 20.0])
             .clamp(false)
             .build().unwrap();
-        assert_eq!(scale, LinearScale{range: [10.0, 20.0], domain: [1.0, 2.0], clamp: false, round: false});
+        assert_eq!(scale, LinearScale{range: [0.0, 1.0], domain: [0.0, 1.0], clamp: false, round: false});
     }
 
     #[test]
