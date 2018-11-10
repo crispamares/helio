@@ -5,9 +5,10 @@ use std::error::Error;
 use std::rc::Rc;
 
 use helio::core::{Color, Canvas, Circle, CircleBuilder, Segment, SegmentBuilder,StyleBuilder, Scene};
-use helio::scale::{LinearScale, LinearScaleBuilder, OrdinalScale, OrdinalScaleBuilder, PowScale, PowScaleBuilder, extend};
+use helio::scale::{LinearScale, LinearScaleBuilder, OrdinalScale, OrdinalScaleBuilder, PowScale, PowScaleBuilder};
 use helio::svg_backend;
 use helio::color::{WHITE, STEELBLUE, RED, PERU, BLACK};
+use helio::utils::Extend;
 
 fn main() -> Result<(), Box<Error>> {
 
@@ -53,17 +54,17 @@ fn main() -> Result<(), Box<Error>> {
     };
 
     let x_scale: LinearScale = LinearScaleBuilder::default()
-        .domain(extend(&x_data))
+        .domain(f64::extend(&x_data))
         .range([0.0 + margin.3, width as f64 - margin.1])
         .build()?;
 
     let y_scale: LinearScale = LinearScaleBuilder::default()
-        .domain(extend(&y_data))
+        .domain(f64::extend(&y_data))
         .range([height as f64 - margin.0, 0.0 + margin.2])
         .build()?;
 
     let r_scale: PowScale = PowScaleBuilder::default()
-        .domain(extend(&r_data))
+        .domain(f64::extend(&r_data))
         .range([5.0, 15.0])
         .exponent(2)
         .build()?;
