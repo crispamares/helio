@@ -15,7 +15,7 @@ pub struct Style {
     pub fill: Option<Color>,
     #[builder(default)]
     pub stroke: Option<Color>,
-    #[builder(default)]
+    #[builder(default = "1.0")]
     pub stroke_width: f64
 }
 
