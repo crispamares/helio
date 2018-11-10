@@ -1,7 +1,7 @@
 #[macro_use] extern crate derive_builder;
-extern crate num_traits;
-extern crate svg;
-extern crate chrono;
+
+
+
 
 #[macro_use] pub mod utils;
 pub mod color; 

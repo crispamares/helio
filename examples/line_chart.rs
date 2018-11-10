@@ -1,7 +1,7 @@
-extern crate helio;
-extern crate csv;
-extern crate chrono;
-extern crate itertools;
+
+use csv;
+
+
 
 use std::error::Error;
 use std::rc::Rc;
@@ -14,7 +14,7 @@ use helio::svg_backend;
 use helio::color;
 use helio::utils::{Extend};
 
-fn main() -> Result<(), Box<Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
 
     let width = 800;
     let height = 300;

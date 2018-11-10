@@ -32,7 +32,7 @@ impl Default for Style {
 #[derive(Default)]
 pub struct Scene<T> {
     pub canvas: Canvas,
-    pub glyphs: Vec<Box<Glyph<Context=T>>>
+    pub glyphs: Vec<Box<dyn Glyph<Context=T>>>
 }
 
 impl<T> Scene<T> {
@@ -43,7 +43,7 @@ impl<T> Scene<T> {
         }
     }
 
-    pub fn add(&mut self, glyph: Box<Glyph<Context=T>>) {
+    pub fn add(&mut self, glyph: Box<dyn Glyph<Context=T>>) {
         self.glyphs.push(glyph);
     }
 }

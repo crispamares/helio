@@ -1,4 +1,4 @@
-extern crate helio;
+
 
 use std::rc::Rc;
 use std::error::Error;
@@ -6,7 +6,7 @@ use std::error::Error;
 use helio::core::{Color, Canvas, Circle, CircleBuilder, StyleBuilder, Scene, Rect};
 use helio::svg_backend;
 
-fn main() -> Result<(), Box<Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let white = Color{r:0, g:0, b:0, a:1.0};
     let blue = Color{r:0, g:0, b:255, a:0.5};
     let style = Rc::new(

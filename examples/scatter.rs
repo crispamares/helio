@@ -1,5 +1,5 @@
 #[macro_use] extern crate helio;
-extern crate csv;
+use csv;
 
 use std::error::Error;
 use std::rc::Rc;
@@ -10,7 +10,7 @@ use helio::svg_backend;
 use helio::color::{WHITE, STEELBLUE, RED, PERU, BLACK};
 use helio::utils::Extend;
 
-fn main() -> Result<(), Box<Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
 
     let width = 800;
     let height = 600;
