@@ -1,6 +1,7 @@
 
 use scale::interpolate;
 use chrono::{DateTime as ChDateTime, Utc, TimeZone};
+use utils::Extend;
 
 /// Similar to chrono::DateTime<Utc>
 #[derive(Clone, Debug, PartialEq)]
@@ -27,6 +28,15 @@ impl From<ChDateTime<Utc>> for DateTime {
 impl From<f64> for DateTime {
     fn from(millis: f64) -> Self {
         DateTime(millis)
+    }
+}
+
+impl Extend<DateTime> for DateTime {
+    /// Computes the min and max of an array
+    fn extend(vec: &[DateTime]) -> [DateTime; 2] {
+        let v: Vec<f64> = vec.iter().map(|x| x.0).collect();
+        let [a, b] = f64::extend(&v);
+        [DateTime(a), DateTime(b)]
     }
 }
 

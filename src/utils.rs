@@ -1,5 +1,25 @@
-// Stolen from https://crates.io/crates/itertools
+use std::f64::{INFINITY, NEG_INFINITY};
 
+pub trait Extend<T> {
+    fn extend(vec: &[T]) -> [T; 2];
+}
+
+impl Extend<f64> for f64 {
+    /// Computes the min and max of an array
+    fn extend(vec: &[f64]) -> [f64; 2] {
+        let mut min = INFINITY;
+        let mut max = NEG_INFINITY;
+        for &x in vec.iter() {
+            min = x.min(min);
+            max = x.max(max);
+        }
+
+        [min, max]
+    }
+}
+
+
+// Stolen from https://crates.io/crates/itertools
 #[macro_export]
 macro_rules! izip {
     // @closure creates a tuple-flattening closure for .map() call. usage:

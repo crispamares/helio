@@ -1,17 +1,3 @@
-use std::f64::{INFINITY, NEG_INFINITY};
-
-/// Computes the min and max of an array
-pub fn extend(vec: &[f64]) -> [f64; 2] {
-    let mut min = INFINITY;
-    let mut max = NEG_INFINITY;
-    for &x in vec.iter() {
-        min = x.min(min);
-        max = x.max(max);
-    }
-
-    [min, max]
-}
-
 fn interpolate(
     data: &[f64], 
     domain: &[f64; 2], 
@@ -44,7 +30,7 @@ pub mod pow_scale;
 pub use self::pow_scale::{PowScale, PowScaleBuilder};
 
 pub mod time_scale;
-pub use self::time_scale::{TimeScale, TimeScaleBuilder};
+pub use self::time_scale::{TimeScale, TimeScaleBuilder, DateTime};
 
 pub mod ordinal_scale;
 pub use self::ordinal_scale::{OrdinalScale, OrdinalScaleBuilder};
