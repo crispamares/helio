@@ -2,7 +2,7 @@
 use svg;
 use svg::{Document, Node};
 use svg::node::element;
-use core::{Scene, Circle, Glyph, Color, Rect, Segment, Line, Style};
+use crate::core::{Scene, Circle, Glyph, Color, Rect, Segment, Line, Style};
 
 pub struct SVGContext {
     pub doc: Document

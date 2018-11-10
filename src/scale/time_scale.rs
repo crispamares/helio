@@ -1,7 +1,7 @@
 
-use scale::interpolate;
+use crate::scale::interpolate;
 use chrono::{DateTime as ChDateTime, Utc, TimeZone};
-use utils::Extend;
+use crate::utils::Extend;
 
 /// Similar to chrono::DateTime<Utc>
 #[derive(Clone, Debug, PartialEq)]

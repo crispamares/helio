@@ -1,5 +1,5 @@
 use std::rc::Rc;
-pub use color::Color;
+pub use crate::color::Color;
 
 #[derive(Debug, Default)]
 pub struct Canvas {

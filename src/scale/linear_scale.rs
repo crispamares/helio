@@ -1,5 +1,5 @@
 
-use scale::interpolate;
+use crate::scale::interpolate;
 
 #[derive(Debug, Builder, Default, PartialEq)]
 #[builder(setter(into))]
