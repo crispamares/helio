@@ -92,6 +92,15 @@ pub struct Line {
     pub style: Rc<Style>
 }
 
+impl Line {
+    pub fn add_x(&mut self, x: f64) {
+        self.x.push(x);
+    }
+    pub fn add_y(&mut self, y: f64) {
+        self.y.push(y);
+    }
+}
+
 pub trait Mark {
     fn x() -> f64;
     fn y() -> f64;
