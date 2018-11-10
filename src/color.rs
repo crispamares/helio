@@ -1,4 +1,6 @@
 use std::convert::Into;
+use std::f32; 
+use std::hash::{Hash, Hasher};
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Color {
@@ -18,6 +20,30 @@ impl Color {
             Some(c) => c.to_string(), 
             None => "none".into() 
         }
+    }
+
+    pub fn to_hex(&self) -> String {
+        let alpha: u8 = (self.a * 255.0).round() as u8;
+        format!("#{:02x}{:02x}{:02x}{:02x}", self.r, self.g, self.b, alpha)
+    }
+}
+
+impl PartialEq for Color {
+    fn eq(&self, other: &Color) -> bool {
+        self.r == other.r 
+        && self.g == other.g
+        && self.b == other.b
+        && (self.a - other.a).abs() < f32::EPSILON
+    }
+}
+impl Eq for Color {}
+impl Hash for Color {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.r.hash(state);
+        self.g.hash(state);
+        self.b.hash(state);
+        let alpha: u8 = (self.a * 255.0).round() as u8;
+        alpha.hash(state);
     }
 }
 
@@ -172,3 +198,19 @@ pub const WHITE: Color = Color{r:255, g:255, b:255, a:1.0};
 pub const WHITESMOKE: Color = Color{r:245, g:245, b:245, a:1.0};
 pub const YELLOW: Color = Color{r:255, g:255, b:0, a:1.0};
 pub const YELLOWGREEN: Color = Color{r:154, g:205, b:50, a:1.0}; 
+
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn hexadecimal_works() {
+        assert_eq!(BLUE.to_hex(), "#0000ffff");
+        assert_eq!(WHITE.to_hex(), "#ffffffff");
+        assert_eq!(BLACK.to_hex(), "#000000ff");
+        let trans = Color{r: 255, g: 100, b: 23, a: 0.5};
+        assert_eq!(trans.to_hex(), "#ff641780");
+    }
+}
