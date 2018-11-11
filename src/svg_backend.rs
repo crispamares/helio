@@ -2,7 +2,9 @@
 use svg;
 use svg::{Document, Node};
 use svg::node::element;
-use crate::core::{Scene, Circle, Glyph, Color, Rect, Segment, Line, Style};
+
+use crate::core::{Scene, Glyph, Color, Style};
+use crate::mark::{Circle, Rect, Segment, Line, Text, TextAlign};
 
 pub struct SVGContext {
     pub doc: Document
@@ -66,6 +68,24 @@ impl Glyph for Line {
         
         let mut e = element::Polyline::new()
             .set("points", points.join(","));
+        set_style(&mut e, &self.style);
+        ctx.doc.append(e);
+    }
+}
+
+impl Glyph for Text {
+    type Context =  SVGContext;
+
+    fn draw(& self, ctx: &mut Self::Context) {
+        let mut e = element::Text::new()
+            .set("x", self.x)
+            .set("y", self.y)
+            .set("text-anchor", match self.align {
+                TextAlign::Start => "start",
+                TextAlign::Center => "middle",
+                TextAlign::End => "end",
+            })
+            .add(svg::node::Text::new(self.text.clone()));
         set_style(&mut e, &self.style);
         ctx.doc.append(e);
     }

@@ -8,7 +8,7 @@ use std::rc::Rc;
 use chrono::{Utc, NaiveDate, DateTime as ChDateTime};
 use itertools::Itertools;
 
-use helio::core::{Color, Canvas, Line, StyleBuilder, Scene};
+use helio::core::{Color, Canvas, Line, StyleBuilder, Scene, TextBuilder, TextAlign};
 use helio::scale::{OrdinalScale, OrdinalScaleBuilder, DateTime, TimeScale, TimeScaleBuilder, LinearScale, LinearScaleBuilder};
 use helio::svg_backend;
 use helio::color;
@@ -95,6 +95,15 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         scene.add(Box::new(line));
     }
+
+    let title = TextBuilder::default()
+        .x(width / 2)
+        .y(40)
+        .text("Stocks values")
+        .align(TextAlign::Center)
+        .build()?;
+
+    scene.add(Box::new(title));
 
     svg_backend::save("chart.svg", &scene);
     Ok(())

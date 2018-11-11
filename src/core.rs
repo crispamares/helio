@@ -1,6 +1,8 @@
 pub use crate::color::Color;
-pub use crate::mark::{Circle, Rect, Segment, Line,
-                      CircleBuilder, RectBuilder, SegmentBuilder, LineBuilder};
+pub use crate::mark::{
+    Circle, CircleBuilder, Rect, RectBuilder, Segment, SegmentBuilder,
+    Line, LineBuilder, Text, TextBuilder, TextAlign
+};
 
 #[derive(Debug, Default)]
 pub struct Canvas {
