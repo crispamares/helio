@@ -1,5 +1,6 @@
-use std::rc::Rc;
 pub use crate::color::Color;
+pub use crate::mark::{Circle, Rect, Segment, Line,
+                      CircleBuilder, RectBuilder, SegmentBuilder, LineBuilder};
 
 #[derive(Debug, Default)]
 pub struct Canvas {
@@ -52,63 +53,4 @@ impl<T> Scene<T> {
 pub trait Glyph {
     type Context;
     fn draw(& self, ctx: &mut Self::Context);
-}
-
-#[derive(Debug, Builder, Default)]
-#[builder(setter(into))]
-pub struct Circle {
-    pub x: f64,
-    pub y: f64,
-    pub radius: f64,
-    #[builder(default)]
-    pub style: Rc<Style>
-}
-
-#[derive(Debug, Builder)]
-#[builder(setter(into))]
-pub struct Rect {
-    pub x: f64,
-    pub y: f64,
-    pub width: f64,
-    pub height: f64,
-    pub style: Rc<Style>
-}
-
-#[derive(Debug, Builder)]
-#[builder(setter(into))]
-pub struct Segment {
-    pub x: f64,
-    pub y: f64,
-    pub x2: f64,
-    pub y2: f64,
-    pub style: Rc<Style>
-}
-
-#[derive(Debug, Builder)]
-#[builder(setter(into))]
-pub struct Line {
-    pub x: Vec<f64>,
-    pub y: Vec<f64>,
-    pub style: Rc<Style>
-}
-
-impl Line {
-    pub fn add_x(&mut self, x: f64) {
-        self.x.push(x);
-    }
-    pub fn add_y(&mut self, y: f64) {
-        self.y.push(y);
-    }
-}
-
-pub trait Mark {
-    fn x() -> f64;
-    fn y() -> f64;
-    fn x2() -> f64;
-    fn y2() -> f64;
-    fn xc() -> f64;
-    fn yc() -> f64;
-    fn width() -> f64;
-    fn height() -> f64;
-    fn style() -> Style;
 }
