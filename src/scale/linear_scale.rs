@@ -66,7 +66,7 @@ mod tests {
             .clamp(true)
             .build().unwrap();
 
-        assert_eq!( scale.call(&[0.0, 1.0, 2.0, 3.0]), [10.0, 10.0, 20.0, 20.0] );
+        assert_eq!( scale.call(&[-1.0, 0.0, 1.0, 2.0, 3.0]), [10.0, 10.0, 10.0, 20.0, 20.0] );
         assert_eq!( scale.invert(&[0.0, 10.0, 20.0, 30.0]), &[1.0, 1.0, 2.0, 2.0] );
     }
 
