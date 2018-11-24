@@ -22,7 +22,7 @@ Helio is a visualization library for Rust.
     - Continuous
         - [x] Linear
         - [x] Pow
-        - [ ] Logarithm
+        - [x] Logarithm
         - [x] TimeScale
     - [x] Ordinal
 - [ ] Layers
