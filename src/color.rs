@@ -1,6 +1,7 @@
 use std::convert::Into;
 use std::f32; 
 use std::hash::{Hash, Hasher};
+use crate::utils::InDelta;
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Color {
@@ -33,7 +34,7 @@ impl PartialEq for Color {
         self.r == other.r 
         && self.g == other.g
         && self.b == other.b
-        && (self.a - other.a).abs() < f32::EPSILON
+        && (self.a.in_delta(other.a))
     }
 }
 impl Eq for Color {}
