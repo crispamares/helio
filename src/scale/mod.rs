@@ -10,15 +10,16 @@ fn interpolate(
 ) -> Vec<f64> 
 {
     data.iter()
-        .map(|&x| {
+        .map(|&x: &f64| {
+            if x.is_nan() { return NAN};
             let d0 = d_ease(domain[0]); 
             let d1 = d_ease(domain[1]);
             let r0 = r_ease(range[0]);
             let r1 = r_ease(range[1]);
-            let unit = (d_ease(x) - d0) / (d1 - d0);   // deinterpolate  f(x) -> t ; t € [0,1]
-            let mut val = inv_ease((unit * (r1 - r0)) + r0);  // reinterpolate  f(t) -> y
-            val = if clamp { range[1].min(val).max(range[0]) } else { val };
-            if round { val.round() } else { val }
+            let x_in = if clamp { domain[1].min(x).max(domain[0]) } else { x };
+            let unit = (d_ease(x_in) - d0) / (d1 - d0);   // deinterpolate  f(x) -> t ; t € [0,1]
+            let out = inv_ease((unit * (r1 - r0)) + r0);  // reinterpolate  f(t) -> y
+            if round { out.round() } else { out }
         })
         .collect()
 }
