@@ -1,3 +1,5 @@
+use std::f64::NAN;
+
 fn interpolate(
     data: &[f64], 
     domain: &[f64; 2], 
@@ -29,6 +31,9 @@ pub use self::linear_scale::{LinearScale, LinearScaleBuilder};
 
 pub mod pow_scale;
 pub use self::pow_scale::{PowScale, PowScaleBuilder};
+
+pub mod log_scale;
+pub use self::log_scale::{LogScale, LogScaleBuilder};
 
 pub mod time_scale;
 pub use self::time_scale::{TimeScale, TimeScaleBuilder, DateTime};
