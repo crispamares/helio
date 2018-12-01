@@ -60,6 +60,7 @@ impl FromStr for Color {
     type Err = ParseColorError;
 
     fn from_str(hex: &str) -> Result<Self, Self::Err> {
+        if !hex.starts_with('#') { return Err(ParseColorError{}) };
         match hex.len() {
             9 => { // #rrggbbaa
                 let r = u8::from_str_radix(&hex[1..=2], 16)?;
@@ -284,6 +285,7 @@ mod tests {
         assert_eq!(Color::from_hex("#ffffffff")?, WHITE);
         assert_eq!(Color::from_hex("#000000ff")?, BLACK);
         assert!(Color::from_hex("000000ff").is_err());
+        assert!(Color::from_hex("Ox00000ff").is_err());
         // parse
         assert_eq!("#0000ffff".parse::<Color>()?, BLUE);
         assert_eq!("#ffffffff".parse::<Color>()?, WHITE);
