@@ -1,7 +1,9 @@
 use std::convert::Into;
-use std::f32; 
+use std::{f32, error::Error}; 
 use std::hash::{Hash, Hasher};
+use std::str::FromStr;
 use crate::utils::InDelta;
+use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Color {
@@ -27,6 +29,12 @@ impl Color {
         let alpha: u8 = (self.a * 255.0).round() as u8;
         format!("#{:02x}{:02x}{:02x}{:02x}", self.r, self.g, self.b, alpha)
     }
+
+    /// Equivalent to "#fff".parse()
+    #[inline]
+    pub fn from_hex(hex: &str) -> Result<Self, ParseColorError> {
+        hex.parse()
+    }
 }
 
 impl PartialEq for Color {
@@ -47,6 +55,60 @@ impl Hash for Color {
         alpha.hash(state);
     }
 }
+
+impl FromStr for Color {
+    type Err = ParseColorError;
+
+    fn from_str(hex: &str) -> Result<Self, Self::Err> {
+        match hex.len() {
+            9 => { // #rrggbbaa
+                let r = u8::from_str_radix(&hex[1..=2], 16)?;
+                let g = u8::from_str_radix(&hex[3..=4], 16)?;
+                let b = u8::from_str_radix(&hex[5..=6], 16)?;
+                let a: f32 = u8::from_str_radix(&hex[7..=8], 16)? as f32 / 255.0;
+                Ok(Color {r, g, b, a})
+            },
+            7 => { // #rrggbb
+                let r = u8::from_str_radix(&hex[1..=2], 16)?;
+                let g = u8::from_str_radix(&hex[3..=4], 16)?;
+                let b = u8::from_str_radix(&hex[5..=6], 16)?;
+                let a: f32 = 1.0;
+                Ok(Color {r, g, b, a})
+            },
+            4 => { // #rgb
+                let r = u8::from_str_radix(&hex[1..=1].repeat(2), 16)?;
+                let g = u8::from_str_radix(&hex[2..=2].repeat(2), 16)?;
+                let b = u8::from_str_radix(&hex[3..=3].repeat(2), 16)?;
+                let a: f32 = 1.0;
+                Ok(Color {r, g, b, a})
+            },
+            _ => Err(ParseColorError{})
+        }
+    }
+}
+
+///
+/// ParseColorError
+/// 
+#[derive(Debug, Clone, Copy)]
+pub struct ParseColorError {}
+impl Display for ParseColorError { 
+    fn fmt(&self, f: &mut Formatter) -> Result<(), std::fmt::Error> {
+        write!(f, "Only #rgb, #rrggbb or #rrggbbaa are dupported")
+    }
+}
+impl Error for ParseColorError {}
+impl From<std::num::ParseIntError> for ParseColorError {
+    fn from(_err: std::num::ParseIntError) -> Self {
+        ParseColorError{}
+    }
+}
+
+///
+/// Export categorical palettes
+/// 
+pub const PALETTE_CATEGORY10: [&str; 10] = [ "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" ];
+
 
 ///
 /// Exports the CSS4 color list
@@ -213,5 +275,29 @@ mod tests {
         assert_eq!(BLACK.to_hex(), "#000000ff");
         let trans = Color{r: 255, g: 100, b: 23, a: 0.5};
         assert_eq!(trans.to_hex(), "#ff641780");
+    }
+
+    #[test]
+    fn from_hex_works() -> Result<(), Box<dyn Error>> {
+        // from_hex
+        assert_eq!(Color::from_hex("#0000ffff")?, BLUE);
+        assert_eq!(Color::from_hex("#ffffffff")?, WHITE);
+        assert_eq!(Color::from_hex("#000000ff")?, BLACK);
+        assert!(Color::from_hex("000000ff").is_err());
+        // parse
+        assert_eq!("#0000ffff".parse::<Color>()?, BLUE);
+        assert_eq!("#ffffffff".parse::<Color>()?, WHITE);
+        assert_eq!("#000000ff".parse::<Color>()?, BLACK);
+        assert!("000000ff".parse::<Color>().is_err());
+        // ffggbb
+        assert_eq!(Color::from_hex("#0000ff")?, BLUE);
+        assert_eq!(Color::from_hex("#ffffff")?, WHITE);
+        assert_eq!(Color::from_hex("#000000")?, BLACK);
+        // fgb
+        assert_eq!(Color::from_hex("#00f")?, BLUE);
+        assert_eq!(Color::from_hex("#fff")?, WHITE);
+        assert_eq!(Color::from_hex("#000")?, BLACK);
+
+        Ok(())
     }
 }
