@@ -105,11 +105,36 @@ impl From<std::num::ParseIntError> for ParseColorError {
     }
 }
 
-///
-/// Export categorical palettes
-/// 
-pub const PALETTE_CATEGORY10: [&str; 10] = [ "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" ];
 
+///
+/// Categorical palettes borrowed from https://github.com/d3/d3-scale-chromatic
+/// 
+/// PALETTE_CATEGORY10 (10) ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+pub const PALETTE_CATEGORY10: [Color; 10] = [Color { r: 31, g: 119, b:180, a: 1.0 }, Color { r: 255, g: 127, b: 14, a: 1.0 }, Color { r: 44,g: 160, b: 44, a: 1.0 }, Color { r: 214, g: 39, b: 40, a: 1.0 }, Color{ r: 148, g: 103, b: 189, a: 1.0 }, Color { r: 140, g: 86, b: 75, a: 1.0 }, Color { r: 227, g: 119, b: 194, a: 1.0 }, Color { r: 127, g: 127,b: 127, a: 1.0 }, Color { r: 188, g: 189, b: 34, a: 1.0 }, Color { r: 23, g: 190, b: 207, a: 1.0 }];
+
+/// PALETTE_ACCENT (8) ["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"]
+pub const PALETTE_ACCENT: [Color; 8] = [Color { r: 127, g: 201, b: 127, a: 1.0 }, Color { r: 190, g: 174, b: 212, a: 1.0 }, Color { r: 253, g: 192, b: 134, a: 1.0 }, Color { r: 255, g: 255, b: 153, a: 1.0 }, Color { r: 56, g: 108, b: 176, a: 1.0 }, Color { r: 240, g: 2, b: 127, a: 1.0 }, Color { r: 191, g: 91, b: 23, a: 1.0 }, Color { r: 102, g: 102, b: 102, a: 1.0 }];
+
+/// PALETTE_DARK2 (8) ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666"]
+pub const PALETTE_DARK2: [Color; 8] = [Color { r: 27, g: 158, b: 119, a: 1.0 }, Color { r: 217, g: 95, b: 2, a: 1.0 }, Color { r: 117, g: 112, b: 179, a: 1.0 }, Color { r: 231, g: 41, b: 138, a: 1.0 }, Color { r:102, g: 166, b: 30, a: 1.0 }, Color { r: 230, g: 171, b: 2, a: 1.0 }, Color { r: 166, g: 118, b: 29, a: 1.0 }, Color { r: 102, g: 102, b: 102, a: 1.0 }];
+
+/// PALETTE_PAIRED (12) ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+pub const PALETTE_PAIRED: [Color; 12] = [Color { r: 166, g: 206, b: 227, a: 1.0 }, Color { r: 31, g: 120, b: 180, a: 1.0 }, Color { r: 178, g: 223, b: 138, a: 1.0 }, Color { r: 51, g: 160, b: 44, a: 1.0 }, Color { r: 251, g: 154, b: 153, a: 1.0 }, Color { r: 227, g: 26, b: 28, a: 1.0 }, Color { r: 253, g: 191, b: 111, a: 1.0 }, Color { r: 255, g: 127, b: 0, a: 1.0 }, Color { r: 202, g: 178, b: 214, a: 1.0 }, Color { r: 106, g: 61, b: 154, a: 1.0 }, Color { r: 255, g: 255, b: 153, a: 1.0 }, Color { r: 177, g: 89, b: 40, a: 1.0 }];
+
+/// PALETTE_PASTEL1 (9) ["#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"]
+pub const PALETTE_PASTEL1: [Color; 9] = [Color { r: 251, g: 180, b: 174, a: 1.0 }, Color { r: 179, g: 205, b: 227, a: 1.0 }, Color { r: 204, g: 235, b: 197, a: 1.0 }, Color { r: 222, g: 203, b: 228, a: 1.0 }, Color { r: 254, g: 217, b: 166, a: 1.0 }, Color { r: 255, g: 255, b: 204, a: 1.0 }, Color { r: 229, g: 216, b: 189, a: 1.0 }, Color { r: 253, g: 218, b: 236, a: 1.0 }, Color { r: 242, g: 242, b: 242, a: 1.0 }];
+
+/// PALETTE_PASTEL2 (8) ["#b3e2cd", "#fdcdac", "#cbd5e8", "#f4cae4", "#e6f5c9", "#fff2ae", "#f1e2cc", "#cccccc"]
+pub const PALETTE_PASTEL2: [Color; 8] = [Color { r: 179, g: 226, b: 205, a: 1.0 }, Color { r: 253, g: 205, b: 172, a: 1.0 }, Color { r: 203, g: 213, b: 232, a: 1.0 }, Color { r: 244, g: 202, b: 228, a: 1.0 }, Color { r: 230, g: 245, b: 201, a: 1.0 }, Color { r: 255, g: 242, b: 174, a: 1.0 }, Color { r: 241, g: 226, b: 204, a: 1.0 }, Color { r: 204, g: 204, b: 204, a: 1.0 }];
+
+/// PALETTE_SET1 (9) ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf", "#999999"]
+pub const PALETTE_SET1: [Color; 9] = [Color { r: 228, g: 26, b: 28, a:1.0 }, Color { r: 55, g: 126, b: 184, a: 1.0 }, Color { r: 77, g: 175,b: 74, a: 1.0 }, Color { r: 152, g: 78, b: 163, a: 1.0 }, Color { r: 255, g: 127, b: 0, a: 1.0 }, Color { r: 255, g: 255, b: 51, a: 1.0 }, Color { r: 166, g: 86, b: 40, a: 1.0 }, Color { r: 247, g: 129, b: 191, a: 1.0 }, Color { r: 153, g: 153, b: 153, a: 1.0 }];
+
+/// PALETTE_SET2 (8) ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3"]
+pub const PALETTE_SET2: [Color; 8] = [Color { r: 102, g: 194, b: 165, a: 1.0 }, Color { r: 252, g: 141, b: 98, a: 1.0 }, Color { r: 141, g: 160, b: 203, a: 1.0 }, Color { r: 231, g: 138, b: 195, a: 1.0 }, Color {r: 166, g: 216, b: 84, a: 1.0 }, Color { r: 255, g: 217, b: 47, a: 1.0}, Color { r: 229, g: 196, b: 148, a: 1.0 }, Color { r: 179, g: 179, b: 179, a: 1.0 }];
+
+/// PALETTE_SET3 (12) ["#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f"]
+pub const PALETTE_SET3: [Color; 12] = [Color { r: 141, g: 211, b: 199,a: 1.0 }, Color { r: 255, g: 255, b: 179, a: 1.0 }, Color { r: 190, g:186, b: 218, a: 1.0 }, Color { r: 251, g: 128, b: 114, a: 1.0 }, Color{ r: 128, g: 177, b: 211, a: 1.0 }, Color { r: 253, g: 180, b: 98, a: 1.0 }, Color { r: 179, g: 222, b: 105, a: 1.0 }, Color { r: 252, g: 205, b: 229, a: 1.0 }, Color { r: 217, g: 217, b: 217, a: 1.0 }, Color { r: 188, g: 128, b: 189, a: 1.0 }, Color { r: 204, g: 235, b: 197, a: 1.0}, Color { r: 255, g: 237, b: 111, a: 1.0 }];
 
 ///
 /// Exports the CSS4 color list
