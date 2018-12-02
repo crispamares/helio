@@ -5,7 +5,7 @@ use std::str::FromStr;
 use crate::utils::InDelta;
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Copy)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -34,6 +34,12 @@ impl Color {
     #[inline]
     pub fn from_hex(hex: &str) -> Result<Self, ParseColorError> {
         hex.parse()
+    }
+}
+
+impl Default for Color {
+    fn default() -> Self {
+        BLACK
     }
 }
 
