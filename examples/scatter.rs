@@ -7,7 +7,7 @@ use std::rc::Rc;
 use helio::core::{Color, Canvas, Circle, CircleBuilder, Segment, SegmentBuilder,StyleBuilder, Scene};
 use helio::scale::{LinearScale, LinearScaleBuilder, OrdinalScale, OrdinalScaleBuilder, PowScale, PowScaleBuilder};
 use helio::svg_backend;
-use helio::color::{WHITE, STEELBLUE, RED, PERU, BLACK};
+use helio::color::{WHITE, BLACK, PALETTE_CATEGORY10};
 use helio::utils::Extend;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -71,12 +71,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let c_scale: OrdinalScale<String, Color> = OrdinalScaleBuilder::default()
         .domain(vec!['6'.to_string(),'8'.to_string()])
-        .range(vec![RED, PERU])
-        .unknown(STEELBLUE)
+        .range(PALETTE_CATEGORY10.to_vec())
+        .unknown(Color::from_hex("#ccc")?)
         .build()?;
 
     let mut scene = Scene::new(canvas);
-    // for r in x_scale.call(&x_data).iter().zip(y_scale.call(&y_data).iter()) {
+    
     for row in izip!(x_scale.call(&x_data), 
                      y_scale.call(&y_data),
                      r_scale.call(&r_data),
