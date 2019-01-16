@@ -19,12 +19,18 @@ Helio is a visualization library for Rust.
     - [ ] arc
     - [x] text
 - Scales
-    - Continuous
+    - [x] Continuous
         - [x] Linear
         - [x] Pow
         - [x] Logarithm
         - [x] TimeScale
     - [x] Ordinal
+- Colors
+    - [x] Categorical Palettes
+    - [ ] Sequential
+        - [ ] One Hue
+        - [ ] Multiple Hue
+    - [ ] Diverging
 - [ ] Layers
 - [ ] Axis
 - [ ] Legends
